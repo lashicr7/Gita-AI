@@ -1,0 +1,9 @@
+langchain
+FAISS-cpu
+pypdf
+sentence-transformers
+accelerate
+torch
+transformers
+ctransformers
+chainlit

@@ -5,7 +5,7 @@ from langchain.vectorstores import FAISS
 from langchain.llms import CTransformers
 from langchain.chains import RetrievalQA
 import chainlit as cl
-
+#For loading vectors
 DB_FAISS_PATH = 'vectorstore/db_faiss'
 
 custom_prompt_template = """Use the following pieces of information to answer the user's question.
@@ -38,7 +38,6 @@ def retrieval_qa_chain(llm, prompt, db):
 
 #Loading the model
 def load_llm():
-    # Load the locally downloaded model here
     llm = CTransformers(
         model = "TheBloke/Llama-2-7B-Chat-GGML",
         model_type="llama",
@@ -58,16 +57,8 @@ def qa_bot():
 
     return qa
 
+#Reframing the response(for running in cli)
 def process_response(response_dict):
-    """
-    Process the response dictionary and format the result along with source documents.
-
-    Args:
-        response_dict (dict): A dictionary containing 'query', 'result', and 'source_documents'.
-
-    Returns:
-        str: Formatted result with source documents.
-    """
     query = response_dict.get('query', '')
     result = response_dict.get('result', '')
     source_documents = response_dict.get('source_documents', [])
@@ -89,10 +80,11 @@ def process_response(response_dict):
 def final_result(query):
     qa_result = qa_bot()
     response = qa_result({'query': query})
+    #uncomment this to have reframed response in cli
     # return process_response(response)
     return response
 
-
+#Uncomment below lines to run in cli
 # if __name__ == "__main__":
 #     # Input from the command line
 #     user_input = input("Enter your query: ")
@@ -104,6 +96,7 @@ def final_result(query):
 #     print(process_response(result))
     # what to do in depression?
 
+#Initiating chainlit
 @cl.on_chat_start
 async def start():
     chain = qa_bot()
@@ -114,6 +107,7 @@ async def start():
 
     cl.user_session.set("chain", chain)
 
+#Conversation bot
 @cl.on_message
 async def main(message):
     chain = cl.user_session.get("chain") 
