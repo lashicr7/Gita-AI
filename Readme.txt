@@ -31,4 +31,6 @@ File structure:
 data folder contains the pdf(initial upload command work for any pdfs added into data folder so that we can add accordingly)
 Rest of the files like model.py,upload.py,requirements.txt will be in the main folder directory itself.
 
+To run via docker, run run_docker.sh file
+
 
